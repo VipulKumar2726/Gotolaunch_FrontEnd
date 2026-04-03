@@ -9,6 +9,7 @@ import LaunchDayPage from '../pages/LaunchDayPage';
 import ReportPage from '../pages/ReportPage';
 import ProtectedRoute from './ProtectedRoute';
 import LandingPage from '../pages/LandingPage';
+import PricingSection from '../components/landing/PricingSection';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <RegisterPage />,
+  },
+    {
+    path: '/pricing',
+    element:<PricingSection />,
   },
   {
     path: '/dashboard',

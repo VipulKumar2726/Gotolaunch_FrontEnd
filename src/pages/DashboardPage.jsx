@@ -91,25 +91,66 @@ const DashboardPage = () => {
     }));
   };
 
+  // const handleCreateSubmit = async () => {
+  //   if (!formData.productName || !formData.productUrl || !formData.launchDate) {
+  //     showNotification('Please fill in all fields', 'warning');
+  //     return;
+  //   }
+
+  //   try {
+  //     setSubmitting(true);
+  //     const response = await launchService.createLaunch(formData);
+  //     showNotification('Launch created successfully!', 'success');
+  //     handleCreateClose();
+  //     navigate(`/launch/${response.launch._id}`);
+  //   } catch (err) {
+  //     const errorMsg = err.response?.data?.message || 'Failed to create launch';
+  //     showNotification(errorMsg, 'error');
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
+
   const handleCreateSubmit = async () => {
-    if (!formData.productName || !formData.productUrl || !formData.launchDate) {
-      showNotification('Please fill in all fields', 'warning');
+  if (!formData.productName || !formData.productUrl || !formData.launchDate) {
+    showNotification('Please fill in all fields', 'warning');
+    return;
+  }
+
+  try {
+    setSubmitting(true);
+
+    const response = await launchService.createLaunch(formData);
+
+    showNotification('Launch created successfully!', 'success');
+    handleCreateClose();
+    navigate(`/launch/${response.launch._id}`);
+
+  } catch (err) {
+    const status = err.response?.status;
+    const errorMsg = err.response?.data?.message || 'Failed to create launch';
+
+    // // 🚀 MAIN LOGIC
+    // if (status === 403) {
+    //   showNotification('Upgrade your plan to create more launches 🚀', 'warning');
+
+    //   // 🔥 redirect to pricing page
+    //   navigate('/pricing');  // 👈 your PricingSection route
+    //   return;
+    // }
+      if (status === 403) {
+        showNotification('Upgrade your plan to create more launches 🚀', 'warning');
+      navigate('/pricing', {
+        state: { from: 'create-launch' }
+      });
       return;
     }
 
-    try {
-      setSubmitting(true);
-      const response = await launchService.createLaunch(formData);
-      showNotification('Launch created successfully!', 'success');
-      handleCreateClose();
-      navigate(`/launch/${response.launch._id}`);
-    } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Failed to create launch';
-      showNotification(errorMsg, 'error');
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    showNotification(errorMsg, 'error');
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const handleLaunchClick = (launchId) => {
     navigate(`/launch/${launchId}`);
