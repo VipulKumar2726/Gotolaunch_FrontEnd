@@ -17,7 +17,6 @@ import {
   Divider,
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import DashboardLayout from '../layouts/DashboardLayout';
 import Checklist from '../components/Checklist';
 import launchService from '../api/launchService';
 import { useNotification } from '../hooks/useNotification';
@@ -53,8 +52,19 @@ const LaunchDetailPage = () => {
     try {
       setLoading(true);
       const data = await launchService.getLaunchById(id);
-      setLaunch(data.launch);
-      setChecklistItems(data.launch.checklist || []);
+
+      // Handle both response formats: { launch: {...} } or direct {...}
+      const launchData = data.launch || data;
+      
+      if (!launchData || !launchData._id) {
+        setError('Invalid launch data received');
+        showNotification('Failed to load launch data', 'error');
+        setLoading(false);
+        return;
+      }
+      
+      setLaunch(launchData);
+      setChecklistItems(launchData.checklist || []);
       setError('');
     } catch (err) {
       const errorMsg = err.response?.data?.message || 'Failed to load launch';
@@ -134,7 +144,7 @@ const LaunchDetailPage = () => {
       setItemLoading(true);
       await launchService.deleteLaunch(id);
       showNotification('Launch deleted successfully', 'success');
-      navigate('/dashboard');
+      navigate('/app/launches');
     } catch (err) {
       showNotification('Failed to delete launch', 'error');
     } finally {
@@ -157,26 +167,22 @@ const LaunchDetailPage = () => {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <Box sx={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}>
-          <CircularProgress />
-        </Box>
-      </DashboardLayout>
+      <Box sx={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}>
+        <CircularProgress />
+      </Box>
     );
   }
 
   if (!launch) {
     return (
-      <DashboardLayout>
-        <Alert severity="error">Launch not found</Alert>
-      </DashboardLayout>
+      <Alert severity="error">Launch not found</Alert>
     );
   }
 
   const launchIsToday = isToday(launch.launchDate);
 
   return (
-    <DashboardLayout>
+    <>
       <Box sx={{ marginBottom: '32px' }}>
         {error && (
           <Alert severity="error" sx={{ marginBottom: '24px' }}>
@@ -190,6 +196,7 @@ const LaunchDetailPage = () => {
             marginBottom: '32px',
             overflow: 'hidden',
           }}
+          data-testid="launch-detail-card"
         >
           <CardContent>
             <Grid container spacing={3} alignItems="flex-start">
@@ -252,6 +259,7 @@ const LaunchDetailPage = () => {
                     color="success"
                     startIcon={<EventNoteIcon />}
                     onClick={() => navigate(`/launch/${id}/day`)}
+                    data-testid="btn-launch-day-mode"
                   >
                     Launch Day Mode
                   </Button>
@@ -264,6 +272,7 @@ const LaunchDetailPage = () => {
                   variant="outlined"
                   startIcon={<AssignmentIcon />}
                   onClick={() => navigate(`/report/${id}`)}
+                  data-testid="btn-view-report"
                 >
                   View Report
                 </Button>
@@ -277,6 +286,7 @@ const LaunchDetailPage = () => {
                   startIcon={<DeleteIcon />}
                   onClick={handleDeleteLaunch}
                   disabled={itemLoading}
+                  data-testid="btn-delete-launch"
                 >
                   Delete Launch
                 </Button>
@@ -355,7 +365,7 @@ const LaunchDetailPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </DashboardLayout>
+    </>
   );
 };
 

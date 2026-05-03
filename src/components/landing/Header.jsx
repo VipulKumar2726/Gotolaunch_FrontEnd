@@ -21,7 +21,7 @@ import { Link as RouterLink } from 'react-router-dom';
 const navLinks = [
   { label: 'Features', href: '#features' },
   { label: 'Pricing', href: '#pricing' },
-  { label: 'Login', href: '/login' },
+  // { label: 'Login', href: '/login' },
 ];
 
 const Header = () => {

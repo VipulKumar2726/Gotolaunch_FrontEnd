@@ -1,54 +1,44 @@
-import React, { useState } from 'react';
-import { Box, useTheme, useMediaQuery } from '@mui/material';
-import TopNavbar from '../components/TopNavbar';
-import Sidebar from '../components/Sidebar';
+import { Box, Toolbar, useMediaQuery } from '@mui/material'
+import { useState } from 'react'
+import { Outlet } from 'react-router-dom'
+import Sidebar, { DRAWER_WIDTH } from './Sidebar'
+import Topbar from './Topbar'
 
-const DashboardLayout = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleSidebarClose = () => {
-    setSidebarOpen(false);
-  };
-
-  const handleSidebarOpen = () => {
-    setSidebarOpen(true);
-  };
+export default function DashboardLayout({ children, darkMode, onToggleDark }) {
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const isMobile = useMediaQuery('(max-width:768px)')
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      {/* Sidebar (Desktop or Mobile) */}
-      <Sidebar open={sidebarOpen || !isMobile} onClose={handleSidebarClose} />
+      {/* Sidebar – permanent on desktop, drawer on mobile */}
+      {isMobile ? (
+        <Sidebar open={mobileOpen} onClose={() => setMobileOpen(false)} mobile />
+      ) : (
+        <Sidebar open />
+      )}
 
-      {/* Main Content */}
-      <Box
-        sx={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <TopNavbar onMenuClick={handleSidebarOpen} />
-
-        {/* Content Area */}
+      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        <Topbar
+          darkMode={darkMode}
+          onToggleDark={onToggleDark}
+          onMenuOpen={() => setMobileOpen(true)}
+        />
+        <Toolbar /> {/* spacer */}
         <Box
           component="main"
+          data-testid="dashboard-content"
+          data-locator="main-content-area"
           sx={{
             flex: 1,
-            paddingTop: '80px',
-            paddingLeft: { xs: '16px', sm: '24px', md: '32px' },
-            paddingRight: { xs: '16px', sm: '24px', md: '32px' },
-            paddingBottom: '32px',
-            backgroundColor: '#F5F5F5',
+            p: { xs: 2, md: 3.5 },
+            background: 'background.default',
+            minHeight: '100vh',
             overflow: 'auto',
           }}
         >
-          {children}
+          {children || <Outlet />}
         </Box>
       </Box>
     </Box>
-  );
-};
-
-export default DashboardLayout;
+  )
+}

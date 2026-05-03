@@ -21,7 +21,7 @@ const Footer = () => {
             <Stack>
               <Link component={RouterLink} to="/login" sx={{ color: 'grey.300', textDecoration: 'none' }}>Login</Link>
               <Link component={RouterLink} to="/register" sx={{ color: 'grey.300', textDecoration: 'none' }}>Register</Link>
-              <Link href="#pricing" sx={{ color: 'grey.300', textDecoration: 'none' }}>Pricing</Link>
+              <Link href="/pricing" sx={{ color: 'grey.300', textDecoration: 'none' }}>Pricing</Link>
             </Stack>
           </Box>
         </Stack>

@@ -130,7 +130,7 @@ const PricingSection = () => {
                   fullWidth
                   variant={p.featured ? 'contained' : 'outlined'}
                   size="large"
-                  onClick={() => navigate('/checkout', { state: { plan: p.id } })}
+                  onClick={() => navigate('/create-order', { state: { plan: p.id } })}
                 >
                   {p.id === 'basic' ? 'Get Started Free' : 'Upgrade Now'}
                 </Button>

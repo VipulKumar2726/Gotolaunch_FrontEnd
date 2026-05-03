@@ -33,7 +33,7 @@ const LoginPage = () => {
     try {
       await login(email, password);
       showNotification('Login successful!', 'success');
-      navigate('/dashboard');
+      navigate('/app');
     } catch (err) {
       const errorMsg = err.response?.data?.message || 'Login failed';
       setLocalError(errorMsg);

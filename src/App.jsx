@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+// App.js
+
+import React from 'react';
 import { RouterProvider } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import router from './routes';
 import { AuthProvider } from './context/AuthContext';
-import lightTheme from './utils/theme';
+import { getTheme } from './theme/theme';
+import { useDarkMode } from './hooks/useLocalStorage';
 import Notification from './components/Notification';
 import { useNotification } from './hooks/useNotification';
 
@@ -26,8 +28,11 @@ const AppContent = () => {
 };
 
 function App() {
+  const [darkMode] = useDarkMode();
+  const theme = getTheme(darkMode ? 'dark' : 'light');
+
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={theme}>
       <AuthProvider>
         <AppContent />
       </AuthProvider>

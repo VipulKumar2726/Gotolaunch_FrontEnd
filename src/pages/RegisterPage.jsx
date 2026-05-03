@@ -59,7 +59,7 @@ const RegisterPage = () => {
     try {
       await register(email, password, name);
       showNotification('Registration successful! Welcome to GoToLaunch', 'success');
-      navigate('/dashboard');
+      navigate('/app');
     } catch (err) {
       const errorMsg = err.response?.data?.message || 'Registration failed';
       setLocalError(errorMsg);

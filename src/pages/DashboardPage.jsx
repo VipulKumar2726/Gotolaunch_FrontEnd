@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
-import DashboardLayout from '../layouts/DashboardLayout';
 import launchService from '../api/launchService';
 import { useNotification } from '../hooks/useNotification';
 import { formatDate } from '../utils/formatters';
@@ -124,7 +123,7 @@ const DashboardPage = () => {
 
     showNotification('Launch created successfully!', 'success');
     handleCreateClose();
-    navigate(`/launch/${response.launch._id}`);
+    navigate(`/app/launches/${response.launch._id}`);
 
   } catch (err) {
     const status = err.response?.status;
@@ -153,163 +152,162 @@ const DashboardPage = () => {
 };
 
   const handleLaunchClick = (launchId) => {
-    navigate(`/launch/${launchId}`);
+    navigate(`/app/launches/${launchId}`);
   };
 
   return (
-    <DashboardLayout>
-      <Box sx={{ marginBottom: '32px' }}>
-        <Box
+    <Box sx={{ marginBottom: '32px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '32px',
+          flexWrap: 'wrap',
+          gap: '16px',
+        }}
+      >
+        <Box>
+          <Typography variant="h4" sx={{ fontWeight: 700, marginBottom: '8px' }}>
+            Launches
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#757575' }}>
+            Manage and track your product launches
+          </Typography>
+        </Box>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleCreateClick}
+          size="large"
+          data-testid="btn-create-launch"
+        >
+          Create New Launch
+        </Button>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ marginBottom: '24px' }}>
+          {error}
+        </Alert>
+      )}
+
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}>
+          <CircularProgress />
+        </Box>
+      ) : launches.length === 0 ? (
+        <Card
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '32px',
-            flexWrap: 'wrap',
-            gap: '16px',
+            textAlign: 'center',
+            padding: '60px 32px',
+            backgroundColor: '#FAFAFA',
           }}
         >
-          <Box>
-            <Typography variant="h4" sx={{ fontWeight: 700, marginBottom: '8px' }}>
-              Launches
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#757575' }}>
-              Manage and track your product launches
-            </Typography>
-          </Box>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleCreateClick}
-            size="large"
-          >
-            Create New Launch
+          <Typography variant="h6" sx={{ marginBottom: '16px', color: '#757575' }}>
+            No launches yet
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#BDBDBD', marginBottom: '24px' }}>
+            Create your first launch to get started
+          </Typography>
+          <Button variant="contained" onClick={handleCreateClick}>
+            Create First Launch
           </Button>
-        </Box>
+        </Card>
+      ) : (
+        <Grid container spacing={3}>
+          {launches.map((launch) => (
+            <Grid item xs={12} sm={6} md={4} key={launch._id}>
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+                  },
+                }}
+                onClick={() => handleLaunchClick(launch._id)}
+                data-testid={`launch-card-${launch._id}`}
+              >
+                <CardContent sx={{ flex: 1 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontWeight: 700,
+                      marginBottom: '8px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {launch.productName}
+                  </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ marginBottom: '24px' }}>
-            {error}
-          </Alert>
-        )}
+                  <Box sx={{ marginBottom: '16px' }}>
+                    <Chip
+                      label={launch.status || 'upcoming'}
+                      color={getStatusColor(launch.status)}
+                      size="small"
+                      variant="outlined"
+                    />
+                  </Box>
 
-        {loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}>
-            <CircularProgress />
-          </Box>
-        ) : launches.length === 0 ? (
-          <Card
-            sx={{
-              textAlign: 'center',
-              padding: '60px 32px',
-              backgroundColor: '#FAFAFA',
-            }}
-          >
-            <Typography variant="h6" sx={{ marginBottom: '16px', color: '#757575' }}>
-              No launches yet
-            </Typography>
-            <Typography variant="body2" sx={{ color: '#BDBDBD', marginBottom: '24px' }}>
-              Create your first launch to get started
-            </Typography>
-            <Button variant="contained" onClick={handleCreateClick}>
-              Create First Launch
-            </Button>
-          </Card>
-        ) : (
-          <Grid container spacing={3}>
-            {launches.map((launch) => (
-              <Grid item xs={12} sm={6} md={4} key={launch._id}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
-                    },
-                  }}
-                  onClick={() => handleLaunchClick(launch._id)}
-                >
-                  <CardContent sx={{ flex: 1 }}>
+                  <Box sx={{ marginBottom: '12px' }}>
+                    <Typography variant="caption" sx={{ color: '#757575' }}>
+                      Launch Date
+                    </Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                      {formatDate(launch.launchDate)}
+                    </Typography>
+                  </Box>
+
+                  <Box>
+                    <Typography variant="caption" sx={{ color: '#757575' }}>
+                      Product URL
+                    </Typography>
                     <Typography
-                      variant="h6"
+                      variant="body2"
                       sx={{
-                        fontWeight: 700,
-                        marginBottom: '8px',
+                        color: '#1976D2',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {launch.productName}
+                      {launch.productUrl}
                     </Typography>
+                  </Box>
+                </CardContent>
 
-                    <Box sx={{ marginBottom: '16px' }}>
-                      <Chip
-                        label={launch.status || 'upcoming'}
-                        color={getStatusColor(launch.status)}
-                        size="small"
-                        variant="outlined"
-                      />
-                    </Box>
-
-                    <Box sx={{ marginBottom: '12px' }}>
-                      <Typography variant="caption" sx={{ color: '#757575' }}>
-                        Launch Date
-                      </Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        {formatDate(launch.launchDate)}
-                      </Typography>
-                    </Box>
-
-                    <Box>
-                      <Typography variant="caption" sx={{ color: '#757575' }}>
-                        Product URL
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: '#1976D2',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {launch.productUrl}
-                      </Typography>
-                    </Box>
-                  </CardContent>
-
-                  <Box
-                    sx={{
-                      padding: '16px',
-                      borderTop: '1px solid #E0E0E0',
-                      backgroundColor: '#FAFAFA',
+                <Box
+                  sx={{
+                    padding: '16px',
+                    borderTop: '1px solid #E0E0E0',
+                    backgroundColor: '#FAFAFA',
+                  }}
+                >
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLaunchClick(launch._id);
                     }}
                   >
-                    <Button
-                      fullWidth
-                      variant="outlined"
-                      size="small"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleLaunchClick(launch._id);
-                      }}
-                    >
-                      View Details
-                    </Button>
-                  </Box>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </Box>
+                    View Details
+                  </Button>
+                </Box>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
-      {/* Create Launch Dialog */}
       <Dialog
         open={createDialogOpen}
         onClose={handleCreateClose}
@@ -332,7 +330,7 @@ const DashboardPage = () => {
               name="productName"
               value={formData.productName}
               onChange={handleInputChange}
-              placeholder="e.g., Amazing App v2.0"
+              placeholder="e.g., AI Chat Assistant"
             />
             <TextField
               fullWidth
@@ -340,7 +338,7 @@ const DashboardPage = () => {
               name="productUrl"
               value={formData.productUrl}
               onChange={handleInputChange}
-              placeholder="e.g., https://yourproduct.com"
+              placeholder="e.g., https://example.com"
             />
             <TextField
               fullWidth
@@ -349,14 +347,9 @@ const DashboardPage = () => {
               type="date"
               value={formData.launchDate}
               onChange={handleInputChange}
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              fullWidth
-              label="Timezone"
-              name="timezone"
-              value={formData.timezone}
-              onChange={handleInputChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
           </Box>
         </DialogContent>
@@ -373,7 +366,7 @@ const DashboardPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </DashboardLayout>
+    </Box>
   );
 };
 

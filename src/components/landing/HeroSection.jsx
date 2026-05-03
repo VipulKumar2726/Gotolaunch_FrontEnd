@@ -20,7 +20,7 @@ const HeroSection = () => {
               <Button component={RouterLink} to="/register" variant="contained" size="large">
                 Get Started
               </Button>
-              <Button component="a" href="#pricing" variant="outlined" size="large">
+              <Button component="a" href="/pricing" variant="outlined" size="large">
                 View Pricing
               </Button>
             </Stack>
