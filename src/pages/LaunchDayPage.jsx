@@ -34,11 +34,18 @@ const LaunchDayPage = () => {
 
   const fetchLaunchDetails = async () => {
     try {
+      if (!id) {
+        setError('Launch ID is missing');
+        showNotification('Failed to load launch data', 'error');
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
-      const data = await launchService.getLaunchById(id);
-      setLaunch(data.launch);
+      const launchData = await launchService.getLaunchById(id);
+      setLaunch(launchData);
       // Filter only launch day items
-      const launchDayItems = (data.launch.checklist || []).filter(
+      const launchDayItems = (launchData.checklist || []).filter(
         (item) => item.category === 'Launch Day'
       );
       setChecklistItems(launchDayItems);
@@ -214,7 +221,7 @@ const LaunchDayPage = () => {
             <Typography variant="h6" sx={{ marginBottom: '16px', color: '#757575' }}>
               No Launch Day items
             </Typography>
-            <Button variant="outlined" onClick={() => navigate(`/launch/${id}`)}>
+            <Button variant="outlined" onClick={() => navigate(`/app/launches/${id}`)}>
               Back to Launch
             </Button>
           </Card>
@@ -286,7 +293,7 @@ const LaunchDayPage = () => {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => navigate(`/launch/${id}`)}
+            onClick={() => navigate(`/app/launches/${id}`)}
           >
             Back to Launch Details
           </Button>

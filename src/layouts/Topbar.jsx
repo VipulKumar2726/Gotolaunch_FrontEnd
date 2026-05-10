@@ -10,12 +10,22 @@ import {
 import { useState } from 'react'
 import { DRAWER_WIDTH } from './Sidebar'
 import { notifications } from '../data/dummyData'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 export default function Topbar({ darkMode, onToggleDark, onMenuOpen }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [notifAnchor, setNotifAnchor] = useState(null)
   const isMobile = useMediaQuery('(max-width:768px)')
   const unread = notifications.filter(n => !n.read).length
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
+
+  const handleLogout = async () => {
+    setAnchorEl(null)
+    await logout()
+    navigate('/login')
+  }
 
   return (
     <AppBar
@@ -77,7 +87,7 @@ export default function Topbar({ darkMode, onToggleDark, onMenuOpen }) {
               fontSize: 13, fontWeight: 700,
             }}
           >
-            AJ
+            {user?.fullName?.charAt(0)?.toUpperCase() || 'U'}
           </Avatar>
         </Tooltip>
 
@@ -111,15 +121,23 @@ export default function Topbar({ darkMode, onToggleDark, onMenuOpen }) {
           PaperProps={{ sx: { width: 220, borderRadius: 3, mt: 1 } }}
         >
           <Box sx={{ px: 2, py: 1.5 }}>
-            <Typography variant="subtitle2" fontWeight={700}>Alex Johnson</Typography>
-            <Typography variant="caption" color="text.secondary">alex@startup.io</Typography>
+            <Typography variant="subtitle2" fontWeight={700}>{user?.fullName || 'User'}</Typography>
+            <Typography variant="caption" color="text.secondary">{user?.email}</Typography>
           </Box>
           <Divider />
           <MenuItem><ListItemIcon><Person fontSize="small" /></ListItemIcon>Profile</MenuItem>
           <MenuItem><ListItemIcon><Settings fontSize="small" /></ListItemIcon>Settings</MenuItem>
           <MenuItem><ListItemIcon><Help fontSize="small" /></ListItemIcon>Help & Support</MenuItem>
           <Divider />
-          <MenuItem sx={{ color: 'error.main' }}><ListItemIcon><Logout fontSize="small" color="error" /></ListItemIcon>Sign Out</MenuItem>
+        <MenuItem
+  sx={{ color: 'error.main' }}
+  onClick={handleLogout}
+>
+  <ListItemIcon>
+    <Logout fontSize="small" color="error" />
+  </ListItemIcon>
+  Sign Out
+</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>

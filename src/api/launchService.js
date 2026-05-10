@@ -8,10 +8,16 @@ const launchService = {
   },
 
   getLaunchById: async (id) => {
+    if (!id) {
+      throw new Error('Launch ID is required');
+    }
+    
     const response = await axiosInstance.get(`/launch/${id}`);
-    return response.data;
-  },
+    
 
+    console.log("Launch ID:", response.data.launch._id);
+    return response.data.launch || response.data;
+  },
   createLaunch: async (launchData) => {
     const response = await axiosInstance.post('/launch/create', launchData);
     return response.data;

@@ -123,8 +123,20 @@ const DashboardPage = () => {
 
     showNotification('Launch created successfully!', 'success');
     handleCreateClose();
-    navigate(`/app/launches/${response.launch._id}`);
+//     console.log("Response=====",response);
+// console.log("Response-Launch=====",response.launch);
+// console.log("Response-id=====",response.launch._id);
+//     navigate(`/app/launches/${response.launch._id}`);
 
+    const launchId = response?.launch?._id;
+
+if (!launchId) {
+  console.error("Launch ID missing", response);
+  showNotification("Launch ID missing", "error");
+  return;
+}
+
+navigate(`/app/launches/${launchId}`);
   } catch (err) {
     const status = err.response?.status;
     const errorMsg = err.response?.data?.message || 'Failed to create launch';
@@ -152,6 +164,7 @@ const DashboardPage = () => {
 };
 
   const handleLaunchClick = (launchId) => {
+    console.log("Clicked Launch ID:", launchId);
     navigate(`/app/launches/${launchId}`);
   };
 
@@ -295,8 +308,9 @@ const DashboardPage = () => {
                     variant="outlined"
                     size="small"
                     onClick={(e) => {
+                      console.log("View Details Clicked for Launch ID:", launch);
                       e.stopPropagation();
-                      handleLaunchClick(launch._id);
+                      handleLaunchClick(launch.id);
                     }}
                   >
                     View Details

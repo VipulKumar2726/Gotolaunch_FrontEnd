@@ -12,6 +12,7 @@ import LaunchDetailPage from '../pages/LaunchDetailPage';
 import LaunchDayPage from '../pages/LaunchDayPage';
 import ReportPage from '../pages/ReportPage';
 import ProtectedRoute from './ProtectedRoute';
+import PublicRoute from './PublicRoute';
 import LandingPage from '../pages/LandingPage';
 import PricingSection from '../components/landing/PricingSection';
 import Checkout from '../pages/Checkout';
@@ -35,11 +36,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <LoginPage />,
+    element: (
+      <PublicRoute>
+        <LoginPage />
+      </PublicRoute>
+    ),
   },
   {
     path: '/register',
-    element: <RegisterPage />,
+    element: (
+      <PublicRoute>
+        <RegisterPage />
+      </PublicRoute>
+    ),
   },
   {
     path: '/pricing',

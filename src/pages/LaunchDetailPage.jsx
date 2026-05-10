@@ -50,19 +50,23 @@ const LaunchDetailPage = () => {
 
   const fetchLaunchDetails = async () => {
     try {
-      setLoading(true);
-      const data = await launchService.getLaunchById(id);
+      if (!id) {
+        setError('Launch ID is missing');
+        showNotification('Failed to load launch data', 'error');
+        setLoading(false);
+        return;
+      }
 
-      // Handle both response formats: { launch: {...} } or direct {...}
-      const launchData = data.launch || data;
-      
-      if (!launchData || !launchData._id) {
+      setLoading(true);
+      const launchData = await launchService.getLaunchById(id);
+
+      if (!launchData || !launchData.id) {
         setError('Invalid launch data received');
         showNotification('Failed to load launch data', 'error');
         setLoading(false);
         return;
       }
-      
+
       setLaunch(launchData);
       setChecklistItems(launchData.checklist || []);
       setError('');

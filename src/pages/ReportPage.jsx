@@ -46,7 +46,7 @@ const ReportPage = () => {
 
       // Fetch launch info
       const launchData = await launchService.getLaunchById(launchId);
-      setLaunch(launchData.launch);
+      setLaunch(launchData);
 
       // Try to fetch existing report
       const reportData = await launchService.getReport(launchId);
@@ -124,7 +124,7 @@ const ReportPage = () => {
         <Box sx={{ marginBottom: '32px' }}>
           <Button
             startIcon={<ArrowBackIcon />}
-            onClick={() => navigate(`/launch/${launchId}`)}
+            onClick={() => navigate(`/app/launches/${launchId}`)}
             sx={{ marginBottom: '16px' }}
           >
             Back to Launch
@@ -234,7 +234,7 @@ const ReportPage = () => {
                   >
                     <Button
                       variant="outlined"
-                      onClick={() => navigate(`/launch/${launchId}`)}
+                      onClick={() => navigate(`/app/launches/${launchId}`)}
                       disabled={submitting}
                     >
                       Cancel
