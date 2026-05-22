@@ -28,6 +28,10 @@ import LaunchTimeline from '../pages/LaunchTimeline';
 import EngagementPlaybook from '../pages/EngagementPlaybook';
 import PostLaunchGrowth from '../pages/PostLaunchGrowth';
 import Settings from '../pages/Settings';
+import Guides from '../pages/Guides';
+import Advisor from '../pages/Advisor';
+import Tips from '../pages/Tips';
+import Templates from '../pages/Templates';
 
 const router = createBrowserRouter([
   {
@@ -105,6 +109,22 @@ const router = createBrowserRouter([
       {
         path: 'strategy',
         element: <LaunchStrategy />,
+      },
+       {
+        path: 'guides',
+        element: <Guides />,
+      },
+        {
+        path: 'templates',
+        element: <Templates />,
+      },
+        {
+        path: 'tips',
+        element: <Tips />,
+      },
+        {
+        path: 'advisor',
+        element: <Advisor />,
       },
       {
         path: 'promotion',

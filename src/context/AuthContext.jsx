@@ -1,4 +1,4 @@
-import React, { createContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useState, useCallback, useEffect,useContext } from 'react';
 import authService from '../api/authService';
 
 const AUTH_STORAGE_KEY = 'gotoLaunchAuthUser';
@@ -30,10 +30,23 @@ const saveStoredUser = (user) => {
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  
+  const [savedGuides, setSavedGuides] = useState([1, 3])
+  const [savedPlatforms, setSavedPlatforms] = useState(['Product Hunt', 'Indie Hackers'])
+  const [savedTemplates, setSavedTemplates] = useState([])
   const [user, setUser] = useState(() => getStoredUser());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+   const toggleSavedGuide = (id) => {
+    setSavedGuides(prev => prev.includes(id) ? prev.filter(g => g !== id) : [...prev, id])
+  }
+    const toggleSavedPlatform = (name) => {
+    setSavedPlatforms(prev => prev.includes(name) ? prev.filter(p => p !== name) : [...prev, name])
+  }
+  const toggleSavedTemplate = (id) => {
+    setSavedTemplates(prev => prev.includes(id) ? prev.filter(t => t !== id) : [...prev, id])
+  }
   const initializeAuth = useCallback(async () => {
     try {
       setLoading(true);
@@ -131,7 +144,13 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     initializeAuth,
+     savedGuides, toggleSavedGuide,
+      savedPlatforms, toggleSavedPlatform,
+      savedTemplates, toggleSavedTemplate,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+
+export const useApp = () => useContext(AuthContext)

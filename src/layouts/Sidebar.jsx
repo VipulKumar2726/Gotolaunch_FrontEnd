@@ -7,6 +7,13 @@ import {
   Hub, CalendarMonth, Forum, TrendingUp, Settings, ChevronLeft,
 } from '@mui/icons-material'
 import { useLocation, useNavigate } from 'react-router-dom'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates'
+import ArticleIcon from '@mui/icons-material/Article'
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
+
+
+
 
 export const DRAWER_WIDTH = 260
 
@@ -14,6 +21,10 @@ const navItems = [
   { path: '/app', label: 'Dashboard', icon: <Dashboard /> },
   { path: '/app/launches', label: 'Launches', icon: <Rocket /> },
   { path: '/app/strategy', label: 'Launch Strategy', icon: <Campaign /> },
+  { path: '/app/guides',  label: 'Launch Guides',icon: <MenuBookIcon fontSize="small" /> },
+  { path: '/app/tips', label: 'Launch Tips', icon: <TipsAndUpdatesIcon fontSize="small" /> },
+  { path: '/app/templates', label: 'Templates', icon: <ArticleIcon fontSize="small" /> },
+  { path: '/app/advisor', label: 'AI Advisor', icon: <AutoAwesomeIcon fontSize="small" /> },
   { path: '/app/promotion', label: 'Promotion', icon: <StarRate /> },
   { path: '/app/readiness', label: 'Readiness Score', icon: <Article /> },
   { path: '/app/content', label: 'Content & Copy', icon: <People /> },

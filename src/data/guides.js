@@ -1,0 +1,16 @@
+export const guidesData = [
+  { id: 1, title: 'Product Hunt Launch Checklist', desc: 'Everything you need to prepare a successful Product Hunt launch, from hunter selection to post-launch follow-up.', time: '12 min', diff: 'Medium', category: 'Product Hunt Launch', emoji: '🎯', color: '#f3f0ff', views: 2400 },
+  { id: 2, title: 'How to Build a Pre-Launch Waitlist', desc: 'Step-by-step guide to building a waitlist of 1,000+ people before you even launch.', time: '8 min', diff: 'Beginner', category: 'SaaS Launch', emoji: '📋', color: '#e0f7ff', views: 1800 },
+  { id: 3, title: 'Indie Hacker Launch Strategy', desc: 'How to launch on Indie Hackers and build an audience of engaged early adopters.', time: '10 min', diff: 'Beginner', category: 'Startup Marketing', emoji: '🧑‍💻', color: '#fff7e0', views: 1600 },
+  { id: 4, title: 'AI Tool Launch Playbook 2024', desc: 'The complete playbook for launching AI tools including viral hooks, demo strategies and communities.', time: '15 min', diff: 'Advanced', category: 'AI Tool Launch', emoji: '🤖', color: '#e0ffe0', views: 3100 },
+  { id: 5, title: 'Twitter Thread Strategy for Founders', desc: 'How to write viral Twitter threads that drive signups and build your founder brand.', time: '6 min', diff: 'Beginner', category: 'Startup Marketing', emoji: '🧵', color: '#fff0f5', views: 1500 },
+  { id: 6, title: 'Growth Without Paid Ads', desc: 'Organic growth tactics used by bootstrapped founders to reach 10K users without spending on advertising.', time: '11 min', diff: 'Medium', category: 'Growth Strategy', emoji: '📈', color: '#f0fff0', views: 2200 },
+  { id: 7, title: 'App Store Optimization (ASO) Guide', desc: 'Rank higher in app stores and drive organic installs through keyword optimization.', time: '9 min', diff: 'Medium', category: 'Mobile App Launch', emoji: '📱', color: '#ffeee0', views: 1100 },
+  { id: 8, title: 'Hacker News Show HN Best Practices', desc: 'How to write a compelling Show HN post that reaches the front page and drives traffic.', time: '7 min', diff: 'Advanced', category: 'Product Hunt Launch', emoji: '🔶', color: '#fff4e0', views: 1900 },
+  { id: 9, title: 'Email Outreach for Early Users', desc: 'Write cold emails that actually get replies from potential users and beta testers.', time: '8 min', diff: 'Beginner', category: 'Startup Marketing', emoji: '✉️', color: '#e5f0ff', views: 1300 },
+  { id: 10, title: 'Building in Public Strategy', desc: 'How to document your startup journey publicly to build an audience of supporters before launch.', time: '10 min', diff: 'Beginner', category: 'Growth Strategy', emoji: '🏗️', color: '#f5f0ff', views: 2700 },
+  { id: 11, title: 'LinkedIn B2B Launch Guide', desc: 'Leverage LinkedIn to reach decision makers and drive B2B signups with organic content.', time: '9 min', diff: 'Medium', category: 'SaaS Launch', emoji: '💼', color: '#e8f0ff', views: 1400 },
+  { id: 12, title: 'Mobile App Soft Launch Strategy', desc: 'How to do a controlled soft launch for your mobile app to gather feedback before going wide.', time: '11 min', diff: 'Medium', category: 'Mobile App Launch', emoji: '🚀', color: '#fff5e0', views: 980 },
+]
+
+export const guideCategories = ['All', 'Product Hunt Launch', 'SaaS Launch', 'AI Tool Launch', 'Startup Marketing', 'Growth Strategy', 'Mobile App Launch']
